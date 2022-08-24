@@ -38,7 +38,12 @@ const formationSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-)
+);
+formationSchema.virtual("session", {
+  ref: "Session",
+  localField: "_id",
+  foreignField: "idFormation",
+})
 
 const Formation = mongoose.model('Formation', formationSchema)
 

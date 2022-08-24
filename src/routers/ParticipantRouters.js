@@ -2,8 +2,8 @@ import express from 'express'
 
 const router = new express.Router()
 
-router.get('/', (req, res) => {
-  res.send('user')
+router.get('/participant', (req, res) => {
+  res.send('participant')
 })
 
 export default router

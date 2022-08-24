@@ -35,7 +35,12 @@ const sessionSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-)
+);
+participantSchema.virtual("participant", {
+  ref: "Participant",
+  localField: "_id",
+  foreignField: "idSession",
+});
 
 const Session = mongoose.model('Session', sessionSchema)
 
