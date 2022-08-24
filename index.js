@@ -1,20 +1,30 @@
-const express = require('express')
-const cors = require('cors')
+import 'dotenv/config'
+import cors from 'cors'
+import express from 'express'
+import mongoose from 'mongoose'
+import userRouters from './src/routers/UserRouters.js'
+import formationRouters from './src/routers/FormateurRouters.js'
+import formateurRouters from './src/routers/FormationRouters.js'
+import sessionRouters from './src/routers/SessionRouters.js'
+
 const app = express()
 
 app.use(express.json())
 app.use(cors())
-const PORT = 8080
+
+app.use(userRouters)
+app.use(formateurRouters)
+app.use(formationRouters)
+app.use(sessionRouters)
+
+mongoose
+  .connect(process.env.MONGODB_URL, () =>
+    console.log('Connected successfully to database')
+  )
+  .catch(() => console.log('Something went wrong when connecting to database'))
+
+const PORT = process.env.PORT
+
 app.listen(PORT, () => {
-    console.log(`Server is running on PORT ${PORT}...`)
-})
-
-const mongoose = require('mongoose')
-
-const DB = 'mongodb://localhost:27017//'
-mongoose.connect(DB, {
-    useNewUrlParser: true,
-     useUnifiedTopology: true,
-}).then(() =>{
-    console.log('Database connected..')
+  console.log(`Server in running on http://localhost:${PORT}`)
 })
