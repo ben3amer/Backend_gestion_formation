@@ -6,7 +6,7 @@ import userRouters from './src/routers/UserRouters.js'
 import formationRouters from './src/routers/FormateurRouters.js'
 import formateurRouters from './src/routers/FormationRouters.js'
 import sessionRouters from './src/routers/SessionRouters.js'
-import participantRouters from './src/routers/ParticipantRouters'
+import participantRouters from './src/routers/ParticipantRouters.js'
 
 const app = express()
 
