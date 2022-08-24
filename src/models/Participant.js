@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
-import bcrypt from 'bcrypt'
+
 
 const participantSchema = new mongoose.Schema(
   {
@@ -13,17 +13,6 @@ const participantSchema = new mongoose.Schema(
       validate(value) {
         if (!validator.isEmail(value)) {
           throw new Error('invalid email')
-        }
-      },
-    },
-    password: {
-      type: String,
-      required: true,
-      minLength: 8,
-      trim: true,
-      validate(value) {
-        if (value.toLowerCase().includes('password')) {
-          throw new Error('password is common')
         }
       },
     },
@@ -59,14 +48,6 @@ const participantSchema = new mongoose.Schema(
 
 
 
-//Hash the password
-participantSchema.pre('save', async function (next) {
-  const participant = this
-  if (participant.isModified('password')) {
-    participant.password = await bcrypt.hash(participant.password, 8)
-  }
-  next()
-});
 
 
 const Participant = mongoose.model('Participant', participantSchema)

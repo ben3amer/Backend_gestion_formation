@@ -12,11 +12,12 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+
 app.use(userRouters)
 app.use(formateurRouters)
 app.use(formationRouters)
 app.use(sessionRouters)
-
+app.use(participantRouters)
 mongoose
   .connect(process.env.MONGODB_URL, () =>
     console.log('Connected successfully to database')
