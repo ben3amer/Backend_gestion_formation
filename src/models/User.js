@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import Role from './Role.js'
 
 const userSchema = new mongoose.Schema(
   {
@@ -21,11 +23,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       minLength: 8,
       trim: true,
-      validate(value) {
-        if (value.toLowerCase().includes('password')) {
-          throw new Error('password is common')
-        }
-      },
     },
     firstName: {
       type: String,
@@ -37,14 +34,9 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    age: {
-      type: Number,
-      default: 0,
-      validate(value) {
-        if (value < 0) {
-          throw new Error('age must be positive')
-        }
-      },
+    role: {
+      type: String,
+      enum: [Role.ADMIN, Role.USER, Role.FORMATEUR],
     },
   },
   {
@@ -55,11 +47,36 @@ const userSchema = new mongoose.Schema(
 //Hash the password
 userSchema.pre('save', async function (next) {
   const user = this
+  if (user.isNew) {
+    user.role = Role.USER
+  }
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8)
   }
   next()
 })
+
+userSchema.methods.generateAuthToken = async function () {
+  const user = this
+  const token = jwt.sign({ user }, process.env.JWT_TOKEN, { expiresIn: '7d' })
+  return token
+}
+
+//middleware
+userSchema.statics.findByCrendtials = async (email, password) => {
+  const user = await User.findOne({ email })
+  if (!user) throw new Error('invalid credentials')
+  const isMatch = await bcrypt.compare(password, user.password)
+  if (!isMatch) throw new Error('invalid credentials')
+  return user
+}
+
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+  delete userObject.password
+  return userObject
+}
 
 const User = mongoose.model('User', userSchema)
 
