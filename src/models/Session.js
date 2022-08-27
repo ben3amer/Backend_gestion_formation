@@ -7,20 +7,20 @@ const sessionSchema = new mongoose.Schema(
       required: true,
       ref: "Formation",
     },
-    Date_debut : {
+    dateDebut : {
       type : Date,
       required : true,
     },
-    Date_fin : {
+    dateFin : {
       type : Date,
       required : true,
     },
-    Description : {
+    description : {
       type : String,
       required : true,
       trim : true,
     },
-    Nb_participants : {
+    nbParticipants : {
       type : Number,
       required : true,
       default : 0,
@@ -36,11 +36,16 @@ const sessionSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-participantSchema.virtual("participant", {
+sessionSchema.virtual("participant", {
   ref: "Participant",
   localField: "_id",
   foreignField: "idSession",
 });
+sessionSchema.methods.toJSON = function () {
+  const session = this
+  const sessionObject = session.toObject()
+  return sessionObject
+}
 
 const Session = mongoose.model('Session', sessionSchema)
 

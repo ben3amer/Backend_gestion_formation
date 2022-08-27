@@ -9,28 +9,28 @@ const formationSchema = new mongoose.Schema(
       unique:true,
       trim: true,
     },
-    Nb_session : {
+    nbSession : {
       type : Number,
       defalut : 0,
       required: true,
     },
-    Nb_participant : {
+    nbParticipant : {
       type : Number,
       default : 0,
       required: true,
     },
-    Duree : {
+    duree : {
       type : Number,
     },
-    Budget : {
-      type : Double,
+    budget : {
+      type : Number,
       default: 0,
     },
     completed : {
       type: Boolean,
       default : false,
     },
-    Annee :  {
+    year :  {
       type : Number,
       default: new Date(). getFullYear(),
     }

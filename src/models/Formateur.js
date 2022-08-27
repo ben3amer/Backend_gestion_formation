@@ -34,11 +34,16 @@ const formateurSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-formateurSchema.virtual("session", {
-  ref: "Session",
-  localField: "_id",
-  foreignField: "idFormateur",
-});
+
+
+
+formateurSchema.methods.toJSON = function () {
+  const formateur = this
+  const formateurObject = formateur.toObject()
+  return formateurObject
+}
+
+
 
 const Formateur = mongoose.model('Formateur', formateurSchema)
 
