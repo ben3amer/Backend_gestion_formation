@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import Role from '../models/Role.js'
 import User from '../models/User.js'
-import dotenv from 'dotenv'
 
 export const auth = async (req, res, next) => {
   try {

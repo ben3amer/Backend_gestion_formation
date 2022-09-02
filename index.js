@@ -8,12 +8,13 @@ import formateurRouters from './src/routers/FormationRouters.js'
 import sessionRouters from './src/routers/SessionRouters.js'
 import userRouters from './src/routers/UserRouters.js'
 import authRouters from './src/routers/AuthRouters.js'
+import dotenv from 'dotenv'
 
 const app = express()
 
 app.use(express.json())
 app.use(cors())
-
+app.use(dotenv())
 app.use('/auth', authRouters)
 app.use('/users', userRouters)
 app.use('/formateurs', formateurRouters)
