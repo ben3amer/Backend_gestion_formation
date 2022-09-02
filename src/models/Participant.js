@@ -46,11 +46,7 @@ const participantSchema = new mongoose.Schema(
   }
 );
 
-participantSchema.methods.toJSON = function () {
-  const participant = this
-  const participantObject = participant.toObject()
-  return participantObject
-}
+
 
 
 const Participant = mongoose.model('Participant', participantSchema)

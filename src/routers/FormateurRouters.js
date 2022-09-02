@@ -1,7 +1,6 @@
 import express from 'express'
-import { auth, adminAuth } from '../middleware/auth.js'
+import { auth } from '../middleware/auth.js'
 import Formateur from '../models/Formateur.js'
-import Session from '../models/Session.js'
 
 const router = new express.Router()
 

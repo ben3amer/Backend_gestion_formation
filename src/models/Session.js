@@ -41,11 +41,6 @@ sessionSchema.virtual("participant", {
   localField: "_id",
   foreignField: "idSession",
 });
-sessionSchema.methods.toJSON = function () {
-  const session = this
-  const sessionObject = session.toObject()
-  return sessionObject
-}
 
 const Session = mongoose.model('Session', sessionSchema)
 

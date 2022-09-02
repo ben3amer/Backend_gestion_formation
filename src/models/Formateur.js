@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
-
+import validator from 'validator'
 const formateurSchema = new mongoose.Schema(
   {
-    Email  : {
+    email  : {
       type : String,
       required : true,
       unique : true,
@@ -14,17 +14,17 @@ const formateurSchema = new mongoose.Schema(
         }
       },
     },
-    Nom : {
+    nom : {
       type : String,
       required : true,
       trim :  true,
     },
-    Prenom : {
+    prenom : {
       type : String,
       required : true,
       trim : true, 
     },
-    Tel : {
+    tel : {
       type : Number,
       required : true,
     },
@@ -37,11 +37,6 @@ const formateurSchema = new mongoose.Schema(
 
 
 
-formateurSchema.methods.toJSON = function () {
-  const formateur = this
-  const formateurObject = formateur.toObject()
-  return formateurObject
-}
 
 
 
