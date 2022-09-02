@@ -44,6 +44,12 @@ formationSchema.virtual("session", {
   localField: "_id",
   foreignField: "idFormation",
 })
+formationSchema.methods.toJSON = function () {
+  const formation = this
+  const formationObject = formation.toObject()
+  return formationObject
+}
+
 
 const Formation = mongoose.model('Formation', formationSchema)
 
