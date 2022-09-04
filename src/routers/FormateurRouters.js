@@ -38,10 +38,10 @@ router.get("/:id", auth, async (req, res) => {
 });
 //GET FORMATEUR BY NAME AND LAST NAME 
 router.get("/:name/:lastname", auth, async (req, res) => {
-  const _nom = req.params.name;
-  const _prenom = req.params.lastname;
+  const _name = req.params.name;
+  const _lastname = req.params.lastname;
   try {
-    const formateur = await Formateur.findOne({Nom : _nom ,Prenom:_prenom});
+    const formateur = await Formateur.findOne({nom : _name ,prenom:_lastname});
     if (!formateur) return res.status(404).send();
     res.send(formateur);
   } catch (e) {
@@ -52,7 +52,7 @@ router.get("/:name/:lastname", auth, async (req, res) => {
 //UPDATE FORMATEUR
 router.patch("/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["Email","Nom", "Prenom","Tel"];
+  const allowedUpdates = ["email","nom", "prenom","tel"];
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 
   if (!isValid) return res.status(400).send({ error: "Invalid updates" });
