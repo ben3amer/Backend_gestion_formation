@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
+import Session from './Session.js';
 const formateurSchema = new mongoose.Schema(
   {
     email  : {
@@ -34,7 +35,6 @@ const formateurSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 
 
 

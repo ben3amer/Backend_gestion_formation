@@ -1,7 +1,6 @@
 import express from 'express'
 import Session from '../models/Session.js';
-import Formateur from '../models/Formateur.js'
-import { auth, adminAuth } from '../middleware/auth.js'
+import { auth } from '../middleware/auth.js'
 const router = new express.Router()
 
 
@@ -38,10 +37,10 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 //GET SESSION BY FORMATION ID 
-router.get("/:id", auth, async (req, res) => {
+router.get("/:idFormation", auth, async (req, res) => {
   const _idFormation = req.params.idFormation;
   try {
-    const session = await Session.findOne({idFormation: _idFormation});
+    const session = await Session.find({idFormation: _idFormation});
     if (!session) return res.status(404).send();
     res.send(session);
   } catch (e) {
@@ -49,7 +48,7 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 //GET SESSION BY FORMATEUR ID 
-router.get("/:id", auth, async (req, res) => {
+router.get("/:idFormateur", auth, async (req, res) => {
   const _idFormateur = req.params.idFormateur;
   try {
     const session = await Session.findOne({idFormateur:_idFormateur});
@@ -62,7 +61,7 @@ router.get("/:id", auth, async (req, res) => {
 //UPDATE SESSION
 router.patch("/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["idFormation","dateDebut", "dateFin","description","nbParticipants","idFormateur"];
+  const allowedUpdates = ["idFormation","titre","dateDebut", "dateFin","description","nbParticipants","idFormateur"];
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 
   if (!isValid) return res.status(400).send({ error: "Invalid updates" });

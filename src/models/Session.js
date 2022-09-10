@@ -3,9 +3,13 @@ import mongoose from 'mongoose'
 const sessionSchema = new mongoose.Schema(
   {
     idFormation : {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref: "Formation",
+    },
+    titre : {
+      type : String,
+      required : true,
+      trim : true,
     },
     dateDebut : {
       type : Date,
@@ -22,25 +26,18 @@ const sessionSchema = new mongoose.Schema(
     },
     nbParticipants : {
       type : Number,
-      required : true,
       default : 0,
     },
     
     idFormateur : {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Formateur",
+      type: String,
+      required : true,
     },
   },
   {
     timestamps: true,
   }
 );
-sessionSchema.virtual("participant", {
-  ref: "Participant",
-  localField: "_id",
-  foreignField: "idSession",
-});
 
 const Session = mongoose.model('Session', sessionSchema)
 
