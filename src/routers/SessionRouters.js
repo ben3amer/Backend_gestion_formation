@@ -58,6 +58,17 @@ router.get("/:idFormateur", auth, async (req, res) => {
     res.status(500).send(e);
   }
 });
+// GET SESSION BY TITRE
+router.get("/:titre", auth, async (req, res) => {
+  const _titre = req.params.titre;
+  try {
+    const session = await Session.findOne({titre:_titre});
+    if (!session) return res.status(404).send();
+    res.send(session);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 //UPDATE SESSION
 router.patch("/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
