@@ -19,12 +19,22 @@ router.post("/",auth, async (req, res) => {
 });
 
 //GET ALL SESSION
-router.get("/", auth, async (req, res) => {
-  Session.find()
-  .then(sessions => res.json(sessions))
-  .catch(err => res.status(400).json('err : ' + res.json));
+router.get("/", async (req, res) => {
+  try {
+    const sessions = await Session.find({
+      $or: [
+        {
+          titre: {
+            $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i"),
+          },
+        },
+      ],
+    });
+    return res.send(sessions);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
-
 //GET SESSION BY ID 
 router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;

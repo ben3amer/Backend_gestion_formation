@@ -18,29 +18,37 @@ router.post("/",auth, async (req, res) => {
 });
 
 //GET ALL PARTICIPANT
-router.get("/", auth, async (req, res) => {
-  Participant.find()
-    .then(participant => res.json(participant))
-    .catch(err => res.status(400).json('err : ' + res.json));
-  });
+router.get("/", async (req, res) => {
+  try {
+    const participants = await Participant.find({
+      $or: [
+        {
+          firstName: {
+            $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i"),
+          },
+        },
+        {
+          lastName: {
+            $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i"),
+          },
+        },
+        {
+          email: { $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i") },
+        },
+      ],
+    });
+    return res.send(participants);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 
 //GET PARTICIPANT BY ID 
 router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
     const participant = await Participant.findOne({ _id});
-    if (!participant) return res.status(404).send();
-    res.send(participant);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
-//GET PARTICIPANT BY NAME AND LAST NAME 
-router.get("/:firstname/:lastname", auth, async (req, res) => {
-  const _firstname = req.params.firstname;
-  const _lastname = req.params.lastname;
-  try {
-    const participant = await Participant.findOne({firstName : _firstname ,lastName:_lastname});
     if (!participant) return res.status(404).send();
     res.send(participant);
   } catch (e) {

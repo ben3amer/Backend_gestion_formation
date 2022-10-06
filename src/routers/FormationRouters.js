@@ -19,29 +19,29 @@ router.post("/",auth, async (req, res) => {
 });
 
 //GET ALL FORMATION
-router.get("/", auth, async (req, res) => {
-    Formation.find()
-    .then(formations => res.json(formations))
-    .catch(err => res.status(400).json('err : ' + res.json));
-  });
+router.get("/", async (req, res) => {
+  try {
+    const formations = await Formation.find({
+      $or: [
+        {
+          titre: {
+            $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i"),
+          },
+        },
+      ],
+    });
+    return res.send(formations);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 
 //GET FORMATION BY ID 
 router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
     const formation = await Formation.findOne({ _id});
-    if (!formation) return res.status(404).send();
-    res.send(formation);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
-//GET FORMATION BY TITRE
-router.get("/:titre", auth, async (req, res) => {
-  const _titre = req.params.titre;
-
-  try {
-    const formation = await Formation.findOne({titre : _titre});
     if (!formation) return res.status(404).send();
     res.send(formation);
   } catch (e) {

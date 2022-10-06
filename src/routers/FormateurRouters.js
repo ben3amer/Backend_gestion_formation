@@ -19,11 +19,30 @@ router.post("/",auth, async (req, res) => {
 });
 
 //GET ALL FORMATEUR
-router.get("/", auth, async (req, res) => {
-    Formateur.find()
-    .then(formateurs => res.json(formateurs))
-    .catch(err => res.status(400).json('err : ' + res.json));
-  });
+router.get("/", async (req, res) => {
+  try {
+    const formateurs = await Formateur.find({
+      $or: [
+        {
+          nom: {
+            $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i"),
+          },
+        },
+        {
+          prenom: {
+            $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i"),
+          },
+        },
+        {
+          email: { $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i") },
+        },
+      ],
+    });
+    return res.send(formateurs);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 //GET FORMATEUR BY ID 
 router.get("/:id", auth, async (req, res) => {
@@ -36,18 +55,7 @@ router.get("/:id", auth, async (req, res) => {
     res.status(500).send(e);
   }
 });
-//GET FORMATEUR BY NAME AND LAST NAME 
-router.get("/:name/:lastname", auth, async (req, res) => {
-  const _name = req.params.name;
-  const _lastname = req.params.lastname;
-  try {
-    const formateur = await Formateur.findOne({nom : _name ,prenom:_lastname});
-    if (!formateur) return res.status(404).send();
-    res.send(formateur);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
+
 
 //UPDATE FORMATEUR
 router.patch("/:id", auth, async (req, res) => {
