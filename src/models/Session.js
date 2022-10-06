@@ -1,9 +1,13 @@
 import mongoose from 'mongoose'
+import Formation from './Formation.js';
+import Formateur from './Formateur.js';
+
 
 const sessionSchema = new mongoose.Schema(
   {
-    idFormation : {
-      type: String,
+    formation : {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Formation',
       required: true,
     },
     titre : {
@@ -29,8 +33,9 @@ const sessionSchema = new mongoose.Schema(
       default : 0,
     },
     
-    idFormateur : {
-      type: String,
+    formateur : {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Formateur',
       required : true,
     },
   },

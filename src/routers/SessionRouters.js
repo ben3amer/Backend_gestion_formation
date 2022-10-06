@@ -29,9 +29,10 @@ router.get("/", async (req, res) => {
           },
         },
       ],
-    });
+    }).populate(['formation', 'formateur']);
     return res.send(sessions);
   } catch (err) {
+    console.log(err)
     res.status(500).send(err);
   }
 });
