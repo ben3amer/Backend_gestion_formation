@@ -104,5 +104,16 @@ router.delete("/:id", adminAuth, async (req, res) => {
     res.status(500).send(err);
   }
 });
+router.post("/",adminAuth, async (req, res) => {
+  try{
+    const user = new User({
+      ...req.body,
+    });
+    await user.save();
+    res.status(201).send(user);
+  } catch (e){
+      res.status(400).send(e);
+  }
+});
 
 export default router;
