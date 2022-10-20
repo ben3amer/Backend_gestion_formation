@@ -31,10 +31,11 @@ const participantSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    idSession : {
-        type: String,
-        required: true,
-      },
+    session : {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Session',
+      required : true,
+    },
   },
   {
     timestamps: true,

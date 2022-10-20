@@ -1,7 +1,7 @@
 import express from 'express'
 import { auth, adminAuth } from '../middleware/auth.js'
 import Participant from '../models/Participant.js'
-import Session from '../models/Session.js'
+
 const router = new express.Router()
 
 //CREATE PARTICIPANT
@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
           email: { $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i") },
         },
       ],
-    });
+    }).populate('sessions');
     return res.send(participants);
   } catch (err) {
     res.status(500).send(err);
@@ -48,7 +48,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
-    const participant = await Participant.findOne({ _id});
+    const participant = await Participant.findOne({ _id}).populate('sessions');
     if (!participant) return res.status(404).send();
     res.send(participant);
   } catch (e) {

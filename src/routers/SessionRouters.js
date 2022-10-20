@@ -40,7 +40,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
-    const session = await Session.findOne({ _id});
+    const session = await Session.findOne({ _id}).populate(['formation','formateur']);
     if (!session) return res.status(404).send();
     res.send(session);
   } catch (e) {

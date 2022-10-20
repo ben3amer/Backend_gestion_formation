@@ -1,6 +1,4 @@
 import mongoose from 'mongoose'
-import Formation from './Formation.js';
-import Formateur from './Formateur.js';
 
 
 const sessionSchema = new mongoose.Schema(
