@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
           email: { $regex: new RegExp(`.*${req.query.criteria || ""}.*`, "i") },
         },
       ],
-    }).populate('sessions');
+    }).populate('session');
     return res.send(participants);
   } catch (err) {
     res.status(500).send(err);
@@ -48,7 +48,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
-    const participant = await Participant.findOne({ _id}).populate('sessions');
+    const participant = await Participant.findOne({ _id}).populate('session');
     if (!participant) return res.status(404).send();
     res.send(participant);
   } catch (e) {
@@ -59,14 +59,14 @@ router.get("/:id", auth, async (req, res) => {
 //UPDATE PARTICIPANT
 router.patch("/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["email","firstName", "lastName","age","idSession"];
+  const allowedUpdates = ["email","firstName", "lastName","phone","session"];
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 
   if (!isValid) return res.status(400).send({ error: "Invalid updates" });
 
   try {
     const _id = req.params.id;
-    const participant = await Participant.findOne({ _id});
+    const participant = await Participant.findOne({ _id}).populate('session');
     if (!participant) return res.status(404).send();
     updates.forEach((update) => (participant[update] = req.body[update]));
     await participant.save();
