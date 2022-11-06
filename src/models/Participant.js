@@ -20,10 +20,12 @@ const participantSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
     },
     lastName: {
       type: String,
       required: true,
+      lowercase: true,
       trim: true,
     },
     phone : {
