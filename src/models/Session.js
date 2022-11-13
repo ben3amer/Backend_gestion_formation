@@ -21,16 +21,6 @@ const sessionSchema = new mongoose.Schema(
       type : Date,
       required : true,
     },
-    description : {
-      type : String,
-      required : true,
-      trim : true,
-    },
-    nbParticipants : {
-      type : Number,
-      default : 0,
-    },
-    
     formateur : {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Formateur',

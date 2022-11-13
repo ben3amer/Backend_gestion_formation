@@ -83,14 +83,14 @@ router.get("/:titre", auth, async (req, res) => {
 //UPDATE SESSION
 router.patch("/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["idFormation","titre","dateDebut", "dateFin","description","nbParticipants","idFormateur"];
+  const allowedUpdates = ["formation","titre","dateDebut", "dateFin","formateur"];
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 
   if (!isValid) return res.status(400).send({ error: "Invalid updates" });
 
   try {
     const _id = req.params.id;
-    const session = await Session.findOne({ _id});
+    const session = await Session.findOne({ _id}).populate(['formation', 'formateur']);
     if (!session) return res.status(404).send();
     updates.forEach((update) => (session[update] = req.body[update]));
     await session.save();
