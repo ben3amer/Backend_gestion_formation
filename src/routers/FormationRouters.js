@@ -52,7 +52,7 @@ router.get("/:id", auth, async (req, res) => {
 //UPDATE FORMATION
 router.patch("/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["titre","nbSession","nbParticipants","duree","budget","completed","year"];
+  const allowedUpdates = ["titre","nbSession","nbParticipants","duree","budget","year"];
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 
   if (!isValid) return res.status(400).send({ error: "Invalid updates" });
